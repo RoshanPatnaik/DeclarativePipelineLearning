@@ -2,22 +2,30 @@ pipeline{
 	agent any
 		stages 
 		{
-			stage('Build') 
+			stage('Cleaning') 
 			{
 				steps{
-					echo "Building the Project.........."
+					bat "mvn clean"	
 				}
 			}
-			stage('Test') 
+			stage('Testing') 
 			{
 				steps{
-					echo "Testing the Project.........."
-				}
+					bat "mvn test"
+				}				
 			}
 			stage('Deploy') 
 			{
 				steps{
-					echo "Deploying the Project.........."
+					bat "mvn package"
+				}
+			}
+			stage('consolidate results')
+			{
+				steps{
+					input {"Do you want to capture results?"}
+					junit '**/target/surefire-reports/TEST-*.xml'
+					archive 'target/*.jar'
 				}
 			}
 		}
