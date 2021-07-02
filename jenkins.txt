@@ -23,10 +23,13 @@ pipeline{
 		stage('consolidate results')
 		{
 			steps{
-				input{"Do you want to capture results?"}
-				junit '**/target/surefire-reports/TEST-*.xml'
-				archive 'target/*.jar'
+				script{
+					input {"Do you want to capture results?"}
+					junit '**/target/surefire-reports/TEST-*.xml'
+					archive 'target/*.jar'
+				}
 			}
+			
 		}
 	}
 }
